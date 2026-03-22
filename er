@@ -1,0 +1,191 @@
+-- DevScript.lua
+-- Placez ce script dans ServerScriptService ou StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+
+-- ============================================================
+-- MESSAGE EN COURS DE DEVELOPPEMENT
+-- ============================================================
+
+local function afficherMessageDevlopement(player)
+	-- Notification via StarterGui (SystemMessage style)
+	StarterGui:SetCore("SendNotification", {
+		Title = "⚠️ Script en cours de développement",
+		Text = "Ce script ne marche pas encore. Il est actuellement en cours de développement. Merci de votre patience !",
+		Duration = 10,
+		Icon = "rbxassetid://7733960981",
+	})
+end
+
+-- ============================================================
+-- GUI PERSONNALISEE (ScreenGui)
+-- ============================================================
+
+local function creerInterface(player)
+	local playerGui = player:WaitForChild("PlayerGui")
+
+	-- Supprime une ancienne interface si elle existe déjà
+	if playerGui:FindFirstChild("DevGui") then
+		playerGui.DevGui:Destroy()
+	end
+
+	-- ScreenGui principal
+	local screenGui = Instance.new("ScreenGui")
+	screenGui.Name = "DevGui"
+	screenGui.ResetOnSpawn = false
+	screenGui.IgnoreGuiInset = true
+	screenGui.Parent = playerGui
+
+	-- Fond semi-transparent (toute la page)
+	local overlay = Instance.new("Frame")
+	overlay.Size = UDim2.new(1, 0, 1, 0)
+	overlay.Position = UDim2.new(0, 0, 0, 0)
+	overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	overlay.BackgroundTransparency = 0.45
+	overlay.BorderSizePixel = 0
+	overlay.Parent = screenGui
+
+	-- Cadre principal centré
+	local cadre = Instance.new("Frame")
+	cadre.Size = UDim2.new(0, 520, 0, 280)
+	cadre.Position = UDim2.new(0.5, -260, 0.5, -140)
+	cadre.BackgroundColor3 = Color3.fromRGB(18, 18, 24)
+	cadre.BorderSizePixel = 0
+	cadre.Parent = screenGui
+
+	local coins = Instance.new("UICorner")
+	coins.CornerRadius = UDim.new(0, 16)
+	coins.Parent = cadre
+
+	-- Barre de titre rouge/orange
+	local barreHaut = Instance.new("Frame")
+	barreHaut.Size = UDim2.new(1, 0, 0, 56)
+	barreHaut.Position = UDim2.new(0, 0, 0, 0)
+	barreHaut.BackgroundColor3 = Color3.fromRGB(220, 60, 40)
+	barreHaut.BorderSizePixel = 0
+	barreHaut.Parent = cadre
+
+	local coinsHaut = Instance.new("UICorner")
+	coinsHaut.CornerRadius = UDim.new(0, 16)
+	coinsHaut.Parent = barreHaut
+
+	-- Correctif pour que le bas de la barre soit droit
+	local fixBas = Instance.new("Frame")
+	fixBas.Size = UDim2.new(1, 0, 0, 16)
+	fixBas.Position = UDim2.new(0, 0, 1, -16)
+	fixBas.BackgroundColor3 = Color3.fromRGB(220, 60, 40)
+	fixBas.BorderSizePixel = 0
+	fixBas.Parent = barreHaut
+
+	-- Icône ⚠️ dans la barre
+	local icone = Instance.new("TextLabel")
+	icone.Size = UDim2.new(0, 40, 0, 40)
+	icone.Position = UDim2.new(0, 16, 0.5, -20)
+	icone.BackgroundTransparency = 1
+	icone.Text = "⚠️"
+	icone.TextSize = 28
+	icone.Font = Enum.Font.GothamBold
+	icone.Parent = barreHaut
+
+	-- Titre dans la barre
+	local titre = Instance.new("TextLabel")
+	titre.Size = UDim2.new(1, -70, 1, 0)
+	titre.Position = UDim2.new(0, 60, 0, 0)
+	titre.BackgroundTransparency = 1
+	titre.Text = "SCRIPT EN COURS DE DÉVELOPPEMENT"
+	titre.TextColor3 = Color3.fromRGB(255, 255, 255)
+	titre.TextSize = 16
+	titre.Font = Enum.Font.GothamBold
+	titre.TextXAlignment = Enum.TextXAlignment.Left
+	titre.TextScaled = false
+	titre.Parent = barreHaut
+
+	-- Message principal
+	local message = Instance.new("TextLabel")
+	message.Size = UDim2.new(1, -48, 0, 80)
+	message.Position = UDim2.new(0, 24, 0, 72)
+	message.BackgroundTransparency = 1
+	message.Text = "Ce script ne marche pas.\nIl est actuellement en cours de développement."
+	message.TextColor3 = Color3.fromRGB(220, 220, 220)
+	message.TextSize = 17
+	message.Font = Enum.Font.Gotham
+	message.TextXAlignment = Enum.TextXAlignment.Left
+	message.TextWrapped = true
+	message.Parent = cadre
+
+	-- Ligne de séparation
+	local ligne = Instance.new("Frame")
+	ligne.Size = UDim2.new(1, -48, 0, 1)
+	ligne.Position = UDim2.new(0, 24, 0, 162)
+	ligne.BackgroundColor3 = Color3.fromRGB(60, 60, 75)
+	ligne.BorderSizePixel = 0
+	ligne.Parent = cadre
+
+	-- Message secondaire
+	local sousMessage = Instance.new("TextLabel")
+	sousMessage.Size = UDim2.new(1, -48, 0, 50)
+	sousMessage.Position = UDim2.new(0, 24, 0, 172)
+	sousMessage.BackgroundTransparency = 1
+	sousMessage.Text = "Merci de votre patience. Revenez plus tard ! 🙏"
+	sousMessage.TextColor3 = Color3.fromRGB(140, 140, 160)
+	sousMessage.TextSize = 14
+	sousMessage.Font = Enum.Font.Gotham
+	sousMessage.TextXAlignment = Enum.TextXAlignment.Left
+	sousMessage.TextWrapped = true
+	sousMessage.Parent = cadre
+
+	-- Bouton Fermer
+	local bouton = Instance.new("TextButton")
+	bouton.Size = UDim2.new(0, 140, 0, 40)
+	bouton.Position = UDim2.new(0.5, -70, 0, 222)
+	bouton.BackgroundColor3 = Color3.fromRGB(220, 60, 40)
+	bouton.Text = "Fermer"
+	bouton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	bouton.TextSize = 15
+	bouton.Font = Enum.Font.GothamBold
+	bouton.BorderSizePixel = 0
+	bouton.Parent = cadre
+
+	local coinsBouton = Instance.new("UICorner")
+	coinsBouton.CornerRadius = UDim.new(0, 10)
+	coinsBouton.Parent = bouton
+
+	-- Fermeture au clic
+	bouton.MouseButton1Click:Connect(function()
+		screenGui:Destroy()
+	end)
+
+	-- Animation d'entrée (scale depuis 0.8)
+	cadre.Size = UDim2.new(0, 416, 0, 224)  -- temporairement plus petit
+	cadre.Position = UDim2.new(0.5, -208, 0.5, -112)
+
+	local tweenService = game:GetService("TweenService")
+	local tween = tweenService:Create(cadre,
+		TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+		{
+			Size = UDim2.new(0, 520, 0, 280),
+			Position = UDim2.new(0.5, -260, 0.5, -140),
+		}
+	)
+	tween:Play()
+end
+
+-- ============================================================
+-- LANCEMENT AUTOMATIQUE
+-- ============================================================
+
+-- Fonctionne côté client (StarterPlayerScripts)
+local player = Players.LocalPlayer
+if player then
+	creerInterface(player)
+end
+
+-- Fonctionne aussi côté serveur (ServerScriptService)
+-- Si vous utilisez ce script côté serveur, décommentez ceci :
+--[[
+Players.PlayerAdded:Connect(function(player)
+	wait(1)
+	creerInterface(player)
+end)
+--]]
