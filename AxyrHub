@@ -275,5 +275,84 @@ statusLabel.Text = "> All modules active. Running."
 percent.Text = "100% — Ready"
 task.wait(1.5)
 
+-- Cache l'écran de chargement
+bg.Visible = false
+logo.Visible = false
+logo2.Visible = false
+hubTitle.Visible = false
+title.Visible = false
+statusLabel.Visible = false
+barBg.Visible = false
+percent.Visible = false
+versionLabel.Visible = false
+
+-- GUI FreezeTrade
+local menuFrame = Instance.new("Frame")
+menuFrame.Size = UDim2.new(0, 400, 0, 280)
+menuFrame.Position = UDim2.new(0.5, -200, 0.5, -140)
+menuFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+menuFrame.BorderSizePixel = 0
+menuFrame.ZIndex = 20
+menuFrame.Parent = screenGui
+
+local menuCorner = Instance.new("UICorner")
+menuCorner.CornerRadius = UDim.new(0, 12)
+menuCorner.Parent = menuFrame
+
+local menuTitle = Instance.new("TextLabel")
+menuTitle.Size = UDim2.new(1, 0, 0, 60)
+menuTitle.Position = UDim2.new(0, 0, 0, 0)
+menuTitle.BackgroundTransparency = 1
+menuTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+menuTitle.TextSize = 26
+menuTitle.Font = Enum.Font.GothamBold
+menuTitle.Text = "FreezeTrade"
+menuTitle.ZIndex = 21
+menuTitle.Parent = menuFrame
+
+local divider = Instance.new("Frame")
+divider.Size = UDim2.new(0.9, 0, 0, 1)
+divider.Position = UDim2.new(0.05, 0, 0, 60)
+divider.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+divider.BorderSizePixel = 0
+divider.ZIndex = 21
+divider.Parent = menuFrame
+
+local function createButton(text, posY, color)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0.85, 0, 0, 55)
+    btn.Position = UDim2.new(0.075, 0, 0, posY)
+    btn.BackgroundColor3 = color
+    btn.BorderSizePixel = 0
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.TextSize = 15
+    btn.Font = Enum.Font.GothamBold
+    btn.Text = text
+    btn.ZIndex = 21
+    btn.Parent = menuFrame
+
+    local btnCorner = Instance.new("UICorner")
+    btnCorner.CornerRadius = UDim.new(0, 8)
+    btnCorner.Parent = btn
+
+    return btn
+end
+
+local btn1 = createButton("⚡ Force Accept", 75, Color3.fromRGB(0, 150, 255))
+local btn2 = createButton("❄️ Freeze Trade", 145, Color3.fromRGB(0, 100, 200))
+local btn3 = createButton("💎 PUT BEST ALL BRAINROT", 215, Color3.fromRGB(150, 0, 255))
+
+-- Actions boutons (à personnaliser)
+btn1.MouseButton1Click:Connect(function()
+    print("Force Accept clicked")
+end)
+
+btn2.MouseButton1Click:Connect(function()
+    print("Freeze Trade clicked")
+end)
+
+btn3.MouseButton1Click:Connect(function()
+    print("PUT BEST ALL BRAINROT clicked")
+end)
+
 StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
-screenGui:Destroy()
